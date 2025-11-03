@@ -1,20 +1,19 @@
-import { useState } from "react";
-import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import HomePage from "@/pages/HomePage";
-import { Toaster } from "@/components/ui/sonner";
+import { HashRouter, Routes, Route } from 'react-router-dom'
+import HomePage from '@/pages/HomePage'
+import { Toaster } from '@/components/ui/sonner'
+import '@/App.css'
 
-function App() {
+function App () {
   return (
-    <div className="App">
-      <BrowserRouter>
+    <div className='App'>
+      <HashRouter>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path='/' element={<HomePage />} />
         </Routes>
-      </BrowserRouter>
-      <Toaster position="top-center" />
+      </HashRouter>
+      <Toaster position='top-center' />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
