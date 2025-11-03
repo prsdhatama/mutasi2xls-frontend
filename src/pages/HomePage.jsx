@@ -218,10 +218,10 @@ const HomePage = () => {
             <CardContent className="p-6 text-center space-y-2">
               <div className="text-3xl mb-2">📊</div>
               <h3 className="font-semibold text-lg text-[#1E3A8A]">
-                Kategori Otomatis
+                Privasi Terjaga
               </h3>
               <p className="text-sm text-gray-600">
-                Transaksi dikelompokkan otomatis berdasarkan keyword
+                Tidak ada satupun data yang dikirim ke server
               </p>
             </CardContent>
           </Card>
@@ -230,10 +230,10 @@ const HomePage = () => {
             <CardContent className="p-6 text-center space-y-2">
               <div className="text-3xl mb-2">🎨</div>
               <h3 className="font-semibold text-lg text-[#1E3A8A]">
-                Excel Stylish
+                Cepat & Mudah
               </h3>
               <p className="text-sm text-gray-600">
-                Header berwarna, filter enabled, dropdown kategori
+                Download file Excel tanpa perlu registrasi
               </p>
             </CardContent>
           </Card>
@@ -242,10 +242,10 @@ const HomePage = () => {
             <CardContent className="p-6 text-center space-y-2">
               <div className="text-3xl mb-2">⚡</div>
               <h3 className="font-semibold text-lg text-[#1E3A8A]">
-                Cepat & Mudah
+                Gunakan Kapanpun
               </h3>
               <p className="text-sm text-gray-600">
-                Upload PDF, dapatkan Excel dalam hitungan detik
+                Tidak ada batasan waktu ataupun limit penggunaan
               </p>
             </CardContent>
           </Card>
@@ -253,7 +253,7 @@ const HomePage = () => {
 
         {/* Footer */}
         <div className="text-center text-sm text-gray-600">
-          <p>Powered by Emergent AI</p>
+          {/* <p>Powered by Emergent AI</p> */}
         </div>
       </div>
     </div>
