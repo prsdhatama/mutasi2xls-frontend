@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Upload, FileText, Download, Loader2 } from "lucide-react";
+import { parseBCA, downloadExcel } from '@/utils/parserBCA';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+// const BACKEND_URL = process.env.REACT_APP_BACKEND_URL; -- FRONTEND ONLY
+// const API = `${BACKEND_URL}/api`; -- FRONTEND ONLY
 
 const HomePage = () => {
   const [file, setFile] = useState(null);
@@ -52,48 +53,69 @@ const HomePage = () => {
     }
   };
 
-  const handleUpload = async () => {
-    if (!file) {
-      toast.error("Pilih file PDF terlebih dahulu!");
-      return;
-    }
+  const convertLocal = async () => {
+  if (!file) {
+    toast.error("Pilih file PDF dulu")
+    return
+  }
 
-    setLoading(true);
-    const formData = new FormData();
-    formData.append("file", file);
+  setLoading(true)
 
-    try {
-      const response = await axios.post(`${API}/upload-pdf`, formData, {
-        responseType: "blob",
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      // Create download link
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute(
-        "download",
-        `BCA_Statement_${new Date().getTime()}.xlsx`
-      );
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode.removeChild(link);
-
-      toast.success("Excel berhasil didownload!");
-      setFile(null);
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      toast.error(
-        error.response?.data?.detail ||
-          "Gagal memproses PDF. Pastikan format file benar."
-      );
-    } finally {
-      setLoading(false);
-    }
+  try {
+    const arrayBuffer = await file.arrayBuffer()
+    const rows = await parseBCA(arrayBuffer)
+    downloadExcel(rows)
+    toast.success("Berhasil convert ke Excel")
+  } catch(e) {
+    console.error(e)
+    toast.error("Gagal parsing PDF")
+  } finally {
+    setLoading(false)
+  }
   };
+
+  // const handleUpload = async () => {
+  //   if (!file) {
+  //     toast.error("Pilih file PDF terlebih dahulu!");
+  //     return;
+  //   }
+
+  //   setLoading(true);
+  //   const formData = new FormData();
+  //   formData.append("file", file);
+
+  //   try {
+  //     const response = await axios.post(`${API}/upload-pdf`, formData, {
+  //       responseType: "blob",
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     });
+
+  //     // Create download link
+  //     const url = window.URL.createObjectURL(new Blob([response.data]));
+  //     const link = document.createElement("a");
+  //     link.href = url;
+  //     link.setAttribute(
+  //       "download",
+  //       `BCA_Statement_${new Date().getTime()}.xlsx`
+  //     );
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     link.parentNode.removeChild(link);
+
+  //     toast.success("Excel berhasil didownload!");
+  //     setFile(null);
+  //   } catch (error) {
+  //     console.error("Error uploading file:", error);
+  //     toast.error(
+  //       error.response?.data?.detail ||
+  //         "Gagal memproses PDF. Pastikan format file benar."
+  //     );
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
@@ -187,7 +209,7 @@ const HomePage = () => {
                         Hapus File
                       </Button>
                       <Button
-                        onClick={handleUpload}
+                        onClick={convertLocal}
                         disabled={loading}
                         className="bg-[#1E3A8A] hover:bg-[#1E40AF] text-white font-semibold px-8 py-3 rounded-xl transition-all shadow-lg hover:shadow-xl disabled:opacity-50"
                         data-testid="convert-button"
